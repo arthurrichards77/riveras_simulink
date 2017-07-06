@@ -1,7 +1,7 @@
 classdef simWhy3Model < simAbstractSyntax
     
     properties(Constant=true)
-        known_masks = {'rvsAdd','rvsSubtract','rvsEquiv'};
+        known_masks = {'rvsAdd','rvsSubtract'};
     end
     
     methods
@@ -11,20 +11,37 @@ classdef simWhy3Model < simAbstractSyntax
         end
         
         function toWhy3(obj,fid)
+            % by default, print to screen
             if ~exist('fid','var'),
                 fid=1;
             end
             if isempty(fid),
                 fid=1;
-            end            
+            end           
+            % write header
+            fprintf(fid, 'theory T_%s\n\nuse import rvs_matrix.Matrix\n\n',obj.mdl_name)
+            % list signals
             for ii=1:obj.num_signals,
                 fprintf(fid, 'function %s int : matrix\n', simWhy3Model.fix_name(obj.signals{ii}.local_matlab_name));
             end
+            % start with the easily cloned blocks
             for ii=1:obj.num_blocks,
                 if any(strcmp(obj.blocks{ii}.mask_type,obj.known_masks)),
                     obj.clone_block(fid,ii)
+                elseif strcmp(obj.blocks{ii}.mask_type,'rvsEquiv'),
+                    % do nothing for now - will do all goals at the end
+                else,
+                    warning(sprintf('Cannot convert block: %s',obj.blocks{ii}.matlab_name))
                 end
             end
+            % do the goals last
+            for ii=1:obj.num_blocks,
+                if strcmp(obj.blocks{ii}.mask_type,'rvsEquiv'),
+                    obj.goal_equiv(fid,ii)
+                end
+            end
+            % and close the theory
+            fprintf(fid, '\nend\n');
         end
         
         function disp(obj)
@@ -45,8 +62,8 @@ classdef simWhy3Model < simAbstractSyntax
         end
         
         function clone_block(obj,fid,ii)
-            fprintf(fid, '\nnamespace ns_%s\n', simWhy3Model.fix_name(obj.blocks{ii}.matlab_name));
-            fprintf(fid, '  clone %s with', obj.blocks{ii}.mask_type);
+            fprintf(fid, '\nnamespace NS_%s\n', simWhy3Model.fix_name(obj.blocks{ii}.matlab_name));
+            fprintf(fid, '  clone rvs_simulink.T_%s with', obj.blocks{ii}.mask_type);
             for jj=1:obj.blocks{ii}.num_inputs,
                 if jj>1,
                     fprintf(fid,',');
@@ -64,6 +81,15 @@ classdef simWhy3Model < simAbstractSyntax
             fprintf(fid, '\nend\n');
         end
         
+        function goal_equiv(obj,fid,ii)
+            assert(obj.blocks{ii}.num_inputs==2)
+            fprintf(fid, '\nnamespace NS_%s\n', simWhy3Model.fix_name(obj.blocks{ii}.matlab_name));
+            fprintf(fid, '  goal G_%s: forall k: int. ', simWhy3Model.fix_name(obj.blocks{ii}.matlab_name));
+            fprintf(fid,' %s k = ',simWhy3Model.fix_name(obj.blocks{ii}.inputs{1}.matlab_name));
+            fprintf(fid,' %s k',simWhy3Model.fix_name(obj.blocks{ii}.inputs{2}.matlab_name));
+            fprintf(fid, '\nend\n');
+        end
+
     end
     
     methods(Static)

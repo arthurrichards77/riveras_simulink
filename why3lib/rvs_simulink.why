@@ -9,11 +9,13 @@ theory T_rvsAdd
  axiom A1: forall k:int. out1 k = mat_add (in1 k) (in2 k)
 end
 
-theory T_rvsEquiv
+theory T_rvsSubtract
  use import rvs_matrix.Matrix
+ use import rvs_matrix.MatrixSubtract
 
  function in1 int: matrix
  function in2 int: matrix
+ function out1 int: matrix
 
- goal G1: forall k:int. in1 k = in2 k
+ axiom A1: forall k:int. out1 k = mat_subtract (in1 k) (in2 k)
 end
