@@ -1,2 +1,2 @@
 #!/bin/bash
-why3 prove -P cvc3 matrix.why
+why3 prove -P cvc3 rvs_matrix.why

@@ -1,6 +1,6 @@
 theory T_rvs_test
 
- use import matrix.Matrix
+use import rvs_matrix.Matrix
 
 function rvs_testing_Constant_Output1 int : matrix
 function rvs_testing_Constant1_Output1 int : matrix
@@ -9,11 +9,11 @@ function rvs_testing_rvsAdd1_Output1 int : matrix
 function rvs_testing_rvsSubtract_Output1 int : matrix
 
 namespace NS_rvs_testing_rvsAdd
-  clone rvs.T_rvsAdd with function in1 = rvs_testing_Constant_Output1, function in2 = rvs_testing_Constant1_Output1, function out1 = rvs_testing_rvsAdd_Output1
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_Constant_Output1, function in2 = rvs_testing_Constant1_Output1, function out1 = rvs_testing_rvsAdd_Output1
 end
 
 namespace NS_rvs_testing_rvsAdd1
-  clone rvs.T_rvsAdd with function in1 = rvs_testing_Constant1_Output1, function in2 = rvs_testing_Constant_Output1, function out1 = rvs_testing_rvsAdd1_Output1
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_Constant1_Output1, function in2 = rvs_testing_Constant_Output1, function out1 = rvs_testing_rvsAdd1_Output1
 end
 
 namespace NS_rvs_testing_rvsEquiv

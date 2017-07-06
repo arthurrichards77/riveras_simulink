@@ -1,6 +1,6 @@
 theory T_rvsAdd
- use import matrix.Matrix
- use import matrix.MatrixAdd
+ use import rvs_matrix.Matrix
+ use import rvs_matrix.MatrixAdd
 
  function in1 int: matrix
  function in2 int: matrix
@@ -10,7 +10,7 @@ theory T_rvsAdd
 end
 
 theory T_rvsEquiv
- use import matrix.Matrix
+ use import rvs_matrix.Matrix
 
  function in1 int: matrix
  function in2 int: matrix
