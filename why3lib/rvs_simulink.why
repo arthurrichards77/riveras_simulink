@@ -19,3 +19,13 @@ theory T_rvsSubtract
 
  axiom A1: forall k:int. out1 k = mat_subtract (in1 k) (in2 k)
 end
+
+theory T_Constant
+ use import rvs_matrix.Matrix
+ use import int.Int
+
+ function out1 int: matrix
+
+ axiom A1: forall k:int. out1 k = out1 (k-1)
+end
+
