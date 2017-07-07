@@ -1,9 +1,9 @@
 classdef simWhy3Model < simAbstractSyntax
     
     properties(Constant=true)
-        known_masks = {'rvsAdd','rvsSubtract'};
+        known_masks = {'rvsAdd','rvsSubtract','rvsMult'};
         goal_masks = {'rvsEquiv','rvsConstant'};
-        known_blocks = {'Constant'};
+        known_blocks = {'Constant','UnitDelay'};
     end
     
     methods
@@ -35,7 +35,7 @@ classdef simWhy3Model < simAbstractSyntax
                 elseif any(strcmp(obj.blocks{ii}.mask_type,obj.goal_masks)),
                     % do nothing for now - will do all goals at the end
                 else,
-                    warning(sprintf('Cannot convert block: %s',obj.blocks{ii}.matlab_name))
+                    warning(sprintf('Cannot convert block: %s (Mask type: %s ; Block type: %s)',obj.blocks{ii}.matlab_name,obj.blocks{ii}.mask_type,obj.blocks{ii}.block_type))
                 end
             end
             % do the goals last
@@ -131,6 +131,7 @@ classdef simWhy3Model < simAbstractSyntax
         
         function why3_name = fix_name(matlab_name)
             why3_name = strrep(matlab_name,'/','_');
+            why3_name = strrep(why3_name,' ','_');
         end
         
     end

@@ -5,10 +5,19 @@ use import int.Int
 
 function rvs_testing_A_Output1 int : matrix
 function rvs_testing_B_Output1 int : matrix
+function rvs_testing_K_Output1 int : matrix
+function rvs_testing_Unit_Delay_Output1 int : matrix
 function rvs_testing_rvsAdd_Output1 int : matrix
 function rvs_testing_rvsAdd1_Output1 int : matrix
 function rvs_testing_rvsAdd2_Output1 int : matrix
 function rvs_testing_rvsAdd3_Output1 int : matrix
+function rvs_testing_rvsAdd4_Output1 int : matrix
+function rvs_testing_rvsAdd5_Output1 int : matrix
+function rvs_testing_rvsMult_Output1 int : matrix
+function rvs_testing_rvsMult1_Output1 int : matrix
+function rvs_testing_rvsMult2_Output1 int : matrix
+function rvs_testing_rvsMult3_Output1 int : matrix
+function rvs_testing_rvsMult4_Output1 int : matrix
 function rvs_testing_rvsSubtract_Output1 int : matrix
 
 namespace NS_rvs_testing_A
@@ -17,6 +26,14 @@ end
 
 namespace NS_rvs_testing_B
   clone rvs_simulink.T_Constant with function out1 = rvs_testing_B_Output1
+end
+
+namespace NS_rvs_testing_K
+  clone rvs_simulink.T_Constant with function out1 = rvs_testing_K_Output1
+end
+
+namespace NS_rvs_testing_Unit_Delay
+  clone rvs_simulink.T_UnitDelay with function in1 = rvs_testing_rvsAdd4_Output1, function out1 = rvs_testing_Unit_Delay_Output1
 end
 
 namespace NS_rvs_testing_rvsAdd
@@ -35,6 +52,34 @@ namespace NS_rvs_testing_rvsAdd3
   clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_A_Output1, function out1 = rvs_testing_rvsAdd3_Output1
 end
 
+namespace NS_rvs_testing_rvsAdd4
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_rvsMult_Output1, function in2 = rvs_testing_rvsMult2_Output1, function out1 = rvs_testing_rvsAdd4_Output1
+end
+
+namespace NS_rvs_testing_rvsAdd5
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_rvsMult3_Output1, function in2 = rvs_testing_A_Output1, function out1 = rvs_testing_rvsAdd5_Output1
+end
+
+namespace NS_rvs_testing_rvsMult
+  clone rvs_simulink.T_rvsMult with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_Unit_Delay_Output1, function out1 = rvs_testing_rvsMult_Output1
+end
+
+namespace NS_rvs_testing_rvsMult1
+  clone rvs_simulink.T_rvsMult with function in1 = rvs_testing_K_Output1, function in2 = rvs_testing_Unit_Delay_Output1, function out1 = rvs_testing_rvsMult1_Output1
+end
+
+namespace NS_rvs_testing_rvsMult2
+  clone rvs_simulink.T_rvsMult with function in1 = rvs_testing_B_Output1, function in2 = rvs_testing_rvsMult1_Output1, function out1 = rvs_testing_rvsMult2_Output1
+end
+
+namespace NS_rvs_testing_rvsMult3
+  clone rvs_simulink.T_rvsMult with function in1 = rvs_testing_B_Output1, function in2 = rvs_testing_K_Output1, function out1 = rvs_testing_rvsMult3_Output1
+end
+
+namespace NS_rvs_testing_rvsMult4
+  clone rvs_simulink.T_rvsMult with function in1 = rvs_testing_rvsAdd5_Output1, function in2 = rvs_testing_Unit_Delay_Output1, function out1 = rvs_testing_rvsMult4_Output1
+end
+
 namespace NS_rvs_testing_rvsSubtract
   clone rvs_simulink.T_rvsSubtract with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_B_Output1, function out1 = rvs_testing_rvsSubtract_Output1
 end
@@ -49,6 +94,10 @@ end
 
 namespace NS_rvs_testing_rvsEquiv1
   goal G_rvs_testing_rvsEquiv1: forall k: int.  rvs_testing_rvsAdd2_Output1 k =  rvs_testing_rvsAdd3_Output1 k
+end
+
+namespace NS_rvs_testing_rvsEquiv2
+  goal G_rvs_testing_rvsEquiv2: forall k: int.  rvs_testing_rvsAdd4_Output1 k =  rvs_testing_rvsMult4_Output1 k
 end
 
 end
