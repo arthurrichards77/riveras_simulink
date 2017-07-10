@@ -41,7 +41,7 @@ theory T_Constant
 
  function out1 int: matrix
 
- axiom A1: forall k:int. out1 k = out1 (k-1)
+ axiom A1: forall k1 k2 : int. out1 k1 = out1 k2
 end
 
 theory T_UnitDelay

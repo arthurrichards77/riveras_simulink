@@ -159,10 +159,13 @@ theory MatrixMultiply
 
   (* matrix multiplication *)
   function mat_mult matrix matrix : matrix
+
   (* mult is monoid a.(b.c) = (a.b).c *)
   axiom mat_mult_chk1: forall a b c : matrix. mat_mult a (mat_mult b c) = mat_mult (mat_mult a b) c
+
   (* right distributive (a+b).c = a.c + b.c *)
   axiom mat_mult_chk2: forall a b c : matrix. mat_mult a (mat_add b c) = mat_add (mat_mult a b) (mat_mult a c)
+
   (* left distributive a.(b+c) = a.b + a.c *)
   axiom mat_mult_chk3: forall a b c : matrix. mat_mult (mat_add a b) c = mat_add (mat_mult a c) (mat_mult b c)
 

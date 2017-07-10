@@ -1,6 +1,9 @@
+mdl_name = gcs;
+why_name = sprintf('%s.why',mdl_name);
+
 % build the abstract model
-sa = simWhy3Model('rvs_testing')
+sa = simWhy3Model(mdl_name)
+sa.writeToFile(why_name)
 
-sa.writeToFile('rvs_test.why')
-
-!why3 prove -L ../why3lib -P cvc3 -t 10 rvs_test.why
+cmd = sprintf('why3 prove -L ../why3lib -P cvc3 -t 10 %s',why_name)
+system(cmd)

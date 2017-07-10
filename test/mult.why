@@ -1,0 +1,46 @@
+theory T_mult
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function mult_A_Output1 int : matrix
+function mult_AB_Output1 int : matrix
+function mult_ABC1_Output1 int : matrix
+function mult_ABC2_Output1 int : matrix
+function mult_B_Output1 int : matrix
+function mult_BC_Output1 int : matrix
+function mult_C_Output1 int : matrix
+
+namespace NS_mult_A
+  clone rvs_simulink.T_Constant with function out1 = mult_A_Output1
+end
+
+namespace NS_mult_AB
+  clone rvs_simulink.T_rvsMult with function in1 = mult_A_Output1, function in2 = mult_B_Output1, function out1 = mult_AB_Output1
+end
+
+namespace NS_mult_ABC1
+  clone rvs_simulink.T_rvsMult with function in1 = mult_AB_Output1, function in2 = mult_C_Output1, function out1 = mult_ABC1_Output1
+end
+
+namespace NS_mult_ABC2
+  clone rvs_simulink.T_rvsMult with function in1 = mult_A_Output1, function in2 = mult_BC_Output1, function out1 = mult_ABC2_Output1
+end
+
+namespace NS_mult_B
+  clone rvs_simulink.T_Constant with function out1 = mult_B_Output1
+end
+
+namespace NS_mult_BC
+  clone rvs_simulink.T_rvsMult with function in1 = mult_B_Output1, function in2 = mult_C_Output1, function out1 = mult_BC_Output1
+end
+
+namespace NS_mult_C
+  clone rvs_simulink.T_Constant with function out1 = mult_C_Output1
+end
+
+namespace NS_mult_monoid
+  goal G_mult_monoid: forall k: int.  mult_ABC1_Output1 k =  mult_ABC2_Output1 k
+end
+
+end

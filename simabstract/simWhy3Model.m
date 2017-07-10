@@ -28,7 +28,11 @@ classdef simWhy3Model < simAbstractSyntax
             end
             % start with the easily cloned blocks
             for ii=1:obj.num_blocks,
-                if any(strcmp(obj.blocks{ii}.mask_type,obj.known_masks)),
+                if strcmp(obj.blocks{ii}.mask_type,'rvsCut'),
+                    % special mask - do nothing
+                elseif (numel(obj.blocks{ii}.mask_type)==0)&&(numel(obj.blocks{ii}.block_type)==0),
+                    % means is top level - do nothing
+                elseif any(strcmp(obj.blocks{ii}.mask_type,obj.known_masks)),
                     obj.clone_mask(fid,ii)
                 elseif any(strcmp(obj.blocks{ii}.block_type,obj.known_blocks)),
                     obj.clone_block(fid,ii)
