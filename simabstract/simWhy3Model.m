@@ -1,9 +1,9 @@
 classdef simWhy3Model < simAbstractSyntax
     
     properties(Constant=true)
-        known_masks = {'rvsAdd','rvsSubtract','rvsMult'};
+        known_masks = {'rvsAdd','rvsSubtract','rvsMult','rvsDelay'};
         goal_masks = {'rvsEquiv','rvsConstant'};
-        known_blocks = {'Constant','UnitDelay'};
+        known_blocks = {'Constant'};
     end
     
     methods
@@ -136,6 +136,8 @@ classdef simWhy3Model < simAbstractSyntax
         function why3_name = fix_name(matlab_name)
             why3_name = strrep(matlab_name,'/','_');
             why3_name = strrep(why3_name,' ','_');
+            why3_name = strrep(why3_name,sprintf('\n'),'_');
+            why3_name = strrep(why3_name,sprintf('\r'),'_');
         end
         
     end

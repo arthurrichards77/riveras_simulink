@@ -1,0 +1,65 @@
+theory T_delay
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function delay_A_Output1 int : matrix
+function delay_Ax_Output1 int : matrix
+function delay_Ax1_Output1 int : matrix
+function delay_Ax2_Output1 int : matrix
+function delay_delay_Output1 int : matrix
+function delay_delay1_Output1 int : matrix
+function delay_rvsCut2_Output1 int : matrix
+function delay_x_Output1 int : matrix
+function delay_x0_Output1 int : matrix
+function delay_x1_Output1 int : matrix
+
+namespace NS_delay_A
+  clone rvs_simulink.T_Constant with function out1 = delay_A_Output1
+end
+
+namespace NS_delay_Ax
+  clone rvs_simulink.T_rvsMult with function in1 = delay_A_Output1, function in2 = delay_rvsCut2_Output1, function out1 = delay_Ax_Output1
+end
+
+namespace NS_delay_Ax1
+  clone rvs_simulink.T_rvsMult with function in1 = delay_A_Output1, function in2 = delay_delay1_Output1, function out1 = delay_Ax1_Output1
+end
+
+namespace NS_delay_Ax2
+  clone rvs_simulink.T_rvsMult with function in1 = delay_A_Output1, function in2 = delay_x0_Output1, function out1 = delay_Ax2_Output1
+end
+
+namespace NS_delay_delay
+  clone rvs_simulink.T_rvsDelay with function in1 = delay_Ax_Output1, function in2 = delay_Ax2_Output1, function out1 = delay_delay_Output1
+end
+
+namespace NS_delay_delay1
+  clone rvs_simulink.T_rvsDelay with function in1 = delay_rvsCut2_Output1, function in2 = delay_x1_Output1, function out1 = delay_delay1_Output1
+end
+
+namespace NS_delay_x
+  clone rvs_simulink.T_Constant with function out1 = delay_x_Output1
+end
+
+namespace NS_delay_x0
+  clone rvs_simulink.T_Constant with function out1 = delay_x0_Output1
+end
+
+namespace NS_delay_x1
+  clone rvs_simulink.T_Constant with function out1 = delay_x1_Output1
+end
+
+(* namespace NS_delay_rvsConstant
+  lemma L_delay_rvsConstant: forall k: int.  delay_A_Output1 k =  delay_A_Output1 (k-1)
+end *)
+
+namespace NS_delay_equ1
+  goal G_delay_equ1: forall k: int.  delay_delay_Output1 k =  delay_Ax1_Output1 k
+end
+
+namespace NS_delay_rvsConstant
+  goal G_delay_rvsConstant: forall k: int.  delay_A_Output1 k =  delay_A_Output1 (k-1)
+end
+
+end

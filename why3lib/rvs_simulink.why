@@ -30,7 +30,18 @@ theory T_rvsMult
  function in2 int: matrix
  function out1 int: matrix
 
- axiom A1: forall k:int. out1 k = mat_mult (in1 k) (in2 k)
+ axiom mult_def: forall k:int. out1 k = mat_mult (in1 k) (in2 k)
+end
+
+theory T_rvsDelay
+ use import rvs_matrix.Matrix
+ use import int.Int
+
+ function in1 int: matrix
+ function in2 int: matrix
+ function out1 int: matrix
+
+ axiom delay_def: forall k:int. out1 (k+1) = in1 k
 end
 
 (* supported block types from general simulink *)
@@ -41,16 +52,8 @@ theory T_Constant
 
  function out1 int: matrix
 
- axiom A1: forall k1 k2 : int. out1 k1 = out1 k2
-end
-
-theory T_UnitDelay
- use import rvs_matrix.Matrix
- use import int.Int
-
- function in1 int: matrix
- function out1 int: matrix
-
- axiom A1: forall k:int. out1 k = in1 (k-1)
+ axiom constant_def: forall k1 k2 : int. out1 k1 = out1 k2
+ lemma constant_lemma: forall k : int. out1 k = out1 (k-1)
+ 
 end
 

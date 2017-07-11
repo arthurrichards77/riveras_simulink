@@ -4,32 +4,29 @@ use import rvs_matrix.Matrix
 use import int.Int
 
 function feedback_A_Output1 int : matrix
-function feedback_AplusBK_Output1 int : matrix
-function feedback_AplusBKx_Output1 int : matrix
 function feedback_Ax_Output1 int : matrix
 function feedback_AxplusBu_Output1 int : matrix
 function feedback_B_Output1 int : matrix
-function feedback_BK_Output1 int : matrix
 function feedback_Bu_Output1 int : matrix
 function feedback_K_Output1 int : matrix
-function feedback_Unit_Delay_Output1 int : matrix
-function feedback_rvsCut_Output1 int : matrix
+function feedback_Subsystem_A_Output1 int : matrix
+function feedback_Subsystem_B_Output1 int : matrix
+function feedback_Subsystem_K_Output1 int : matrix
+function feedback_Subsystem_x_Output1 int : matrix
+function feedback_Subsystem_x_next_Output1 int : matrix
+function feedback_Subsystem_AplusBK_Output1 int : matrix
+function feedback_Subsystem_AplusBKx_Output1 int : matrix
+function feedback_Subsystem_BK_Output1 int : matrix
 function feedback_uEqKx_Output1 int : matrix
+function feedback_x_Output1 int : matrix
+function feedback_x0_Output1 int : matrix
 
 namespace NS_feedback_A
   clone rvs_simulink.T_Constant with function out1 = feedback_A_Output1
 end
 
-namespace NS_feedback_AplusBK
-  clone rvs_simulink.T_rvsAdd with function in1 = feedback_BK_Output1, function in2 = feedback_A_Output1, function out1 = feedback_AplusBK_Output1
-end
-
-namespace NS_feedback_AplusBKx
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_AplusBK_Output1, function in2 = feedback_rvsCut_Output1, function out1 = feedback_AplusBKx_Output1
-end
-
 namespace NS_feedback_Ax
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_A_Output1, function in2 = feedback_rvsCut_Output1, function out1 = feedback_Ax_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_A_Output1, function in2 = feedback_x_Output1, function out1 = feedback_Ax_Output1
 end
 
 namespace NS_feedback_AxplusBu
@@ -40,10 +37,6 @@ namespace NS_feedback_B
   clone rvs_simulink.T_Constant with function out1 = feedback_B_Output1
 end
 
-namespace NS_feedback_BK
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_B_Output1, function in2 = feedback_K_Output1, function out1 = feedback_BK_Output1
-end
-
 namespace NS_feedback_Bu
   clone rvs_simulink.T_rvsMult with function in1 = feedback_B_Output1, function in2 = feedback_uEqKx_Output1, function out1 = feedback_Bu_Output1
 end
@@ -52,16 +45,36 @@ namespace NS_feedback_K
   clone rvs_simulink.T_Constant with function out1 = feedback_K_Output1
 end
 
-namespace NS_feedback_Unit_Delay
-  clone rvs_simulink.T_UnitDelay with function in1 = feedback_AxplusBu_Output1, function out1 = feedback_Unit_Delay_Output1
+namespace NS_feedback_Subsystem_AplusBK
+  clone rvs_simulink.T_rvsAdd with function in1 = feedback_Subsystem_BK_Output1, function in2 = feedback_A_Output1, function out1 = feedback_Subsystem_AplusBK_Output1
+end
+
+namespace NS_feedback_Subsystem_AplusBKx
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_Subsystem_AplusBK_Output1, function in2 = feedback_x_Output1, function out1 = feedback_Subsystem_AplusBKx_Output1
+end
+
+namespace NS_feedback_Subsystem_BK
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_B_Output1, function in2 = feedback_K_Output1, function out1 = feedback_Subsystem_BK_Output1
 end
 
 namespace NS_feedback_uEqKx
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_K_Output1, function in2 = feedback_rvsCut_Output1, function out1 = feedback_uEqKx_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_K_Output1, function in2 = feedback_x_Output1, function out1 = feedback_uEqKx_Output1
 end
 
-namespace NS_feedback_equ
-  goal G_feedback_equ: forall k: int.  feedback_AxplusBu_Output1 k =  feedback_AplusBKx_Output1 k
+namespace NS_feedback_x
+  clone rvs_simulink.T_rvsDelay with function in1 = feedback_AxplusBu_Output1, function in2 = feedback_x0_Output1, function out1 = feedback_x_Output1
+end
+
+namespace NS_feedback_x0
+  clone rvs_simulink.T_Constant with function out1 = feedback_x0_Output1
+end
+
+namespace NS_feedback_Subsystem_equ
+  goal G_feedback_Subsystem_equ: forall k: int.  feedback_AxplusBu_Output1 k =  feedback_Subsystem_AplusBKx_Output1 k
+end
+
+namespace NS_feedback_Subsystem_rvsConstant
+  goal G_feedback_Subsystem_rvsConstant: forall k: int.  feedback_Subsystem_AplusBK_Output1 k =  feedback_Subsystem_AplusBK_Output1 (k-1)
 end
 
 end
