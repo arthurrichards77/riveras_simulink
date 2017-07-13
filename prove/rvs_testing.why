@@ -1,0 +1,54 @@
+theory T_rvs_testing
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function rvs_testing_A_Output1 int : matrix
+function rvs_testing_AminusB_Output1 int : matrix
+function rvs_testing_AplusA_Output1 int : matrix
+function rvs_testing_AplusB_Output1 int : matrix
+function rvs_testing_B_Output1 int : matrix
+function rvs_testing_BplusA_Output1 int : matrix
+function rvs_testing_rvsAdd2_Output1 int : matrix
+
+namespace NS_rvs_testing_A
+  clone rvs_simulink.T_Constant with function out1 = rvs_testing_A_Output1
+end
+
+namespace NS_rvs_testing_AminusB
+  clone rvs_simulink.T_rvsSubtract with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_B_Output1, function out1 = rvs_testing_AminusB_Output1
+end
+
+namespace NS_rvs_testing_AplusA
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_A_Output1, function out1 = rvs_testing_AplusA_Output1
+end
+
+namespace NS_rvs_testing_AplusB
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_A_Output1, function in2 = rvs_testing_B_Output1, function out1 = rvs_testing_AplusB_Output1
+end
+
+namespace NS_rvs_testing_B
+  clone rvs_simulink.T_Constant with function out1 = rvs_testing_B_Output1
+end
+
+namespace NS_rvs_testing_BplusA
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_B_Output1, function in2 = rvs_testing_A_Output1, function out1 = rvs_testing_BplusA_Output1
+end
+
+namespace NS_rvs_testing_rvsAdd2
+  clone rvs_simulink.T_rvsAdd with function in1 = rvs_testing_BplusA_Output1, function in2 = rvs_testing_AminusB_Output1, function out1 = rvs_testing_rvsAdd2_Output1
+end
+
+namespace NS_rvs_testing_addCommute
+  goal G_rvs_testing_addCommute: forall k: int.  rvs_testing_AplusB_Output1 k =  rvs_testing_BplusA_Output1 k
+end
+
+namespace NS_rvs_testing_addSub
+  goal G_rvs_testing_addSub: forall k: int.  rvs_testing_rvsAdd2_Output1 k =  rvs_testing_AplusA_Output1 k
+end
+
+namespace NS_rvs_testing_rvsConstant
+  goal G_rvs_testing_rvsConstant: forall k: int.  rvs_testing_rvsAdd2_Output1 k =  rvs_testing_rvsAdd2_Output1 (k-1)
+end
+
+end

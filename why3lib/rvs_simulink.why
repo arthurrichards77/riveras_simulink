@@ -42,6 +42,7 @@ theory T_rvsDelay
  function out1 int: matrix
 
  axiom delay_def: forall k:int. out1 (k+1) = in1 k
+ lemma delay_lem: forall k:int. out1 k = in1 (k-1)
 end
 
 (* supported block types from general simulink *)
@@ -52,8 +53,8 @@ theory T_Constant
 
  function out1 int: matrix
 
- axiom constant_def: forall k1 k2 : int. out1 k1 = out1 k2
- lemma constant_lemma: forall k : int. out1 k = out1 (k-1)
- 
+ axiom constant_def: forall k1 k2 : int. out1 k1 = out1 k2 
+ lemma constant_lem: forall k : int. out1 k = out1 (k-1)
+
 end
 

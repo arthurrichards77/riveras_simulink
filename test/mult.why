@@ -7,8 +7,16 @@ function mult_A_Output1 int : matrix
 function mult_AB_Output1 int : matrix
 function mult_ABC1_Output1 int : matrix
 function mult_ABC2_Output1 int : matrix
+function mult_ABplusAC_Output1 int : matrix
+function mult_AC_Output1 int : matrix
+function mult_ACplusBC_Output1 int : matrix
+function mult_AplusB_Output1 int : matrix
+function mult_AplusBtimesC_Output1 int : matrix
+function mult_AtimesBplusC_Output1 int : matrix
 function mult_B_Output1 int : matrix
+function mult_BA_Output1 int : matrix
 function mult_BC_Output1 int : matrix
+function mult_BplusC_Output1 int : matrix
 function mult_C_Output1 int : matrix
 
 namespace NS_mult_A
@@ -27,16 +35,60 @@ namespace NS_mult_ABC2
   clone rvs_simulink.T_rvsMult with function in1 = mult_A_Output1, function in2 = mult_BC_Output1, function out1 = mult_ABC2_Output1
 end
 
+namespace NS_mult_ABplusAC
+  clone rvs_simulink.T_rvsAdd with function in1 = mult_AB_Output1, function in2 = mult_AC_Output1, function out1 = mult_ABplusAC_Output1
+end
+
+namespace NS_mult_AC
+  clone rvs_simulink.T_rvsMult with function in1 = mult_A_Output1, function in2 = mult_C_Output1, function out1 = mult_AC_Output1
+end
+
+namespace NS_mult_ACplusBC
+  clone rvs_simulink.T_rvsAdd with function in1 = mult_AC_Output1, function in2 = mult_BC_Output1, function out1 = mult_ACplusBC_Output1
+end
+
+namespace NS_mult_AplusB
+  clone rvs_simulink.T_rvsAdd with function in1 = mult_B_Output1, function in2 = mult_A_Output1, function out1 = mult_AplusB_Output1
+end
+
+namespace NS_mult_AplusBtimesC
+  clone rvs_simulink.T_rvsMult with function in1 = mult_AplusB_Output1, function in2 = mult_C_Output1, function out1 = mult_AplusBtimesC_Output1
+end
+
+namespace NS_mult_AtimesBplusC
+  clone rvs_simulink.T_rvsMult with function in1 = mult_A_Output1, function in2 = mult_BplusC_Output1, function out1 = mult_AtimesBplusC_Output1
+end
+
 namespace NS_mult_B
   clone rvs_simulink.T_Constant with function out1 = mult_B_Output1
+end
+
+namespace NS_mult_BA
+  clone rvs_simulink.T_rvsMult with function in1 = mult_B_Output1, function in2 = mult_A_Output1, function out1 = mult_BA_Output1
 end
 
 namespace NS_mult_BC
   clone rvs_simulink.T_rvsMult with function in1 = mult_B_Output1, function in2 = mult_C_Output1, function out1 = mult_BC_Output1
 end
 
+namespace NS_mult_BplusC
+  clone rvs_simulink.T_rvsAdd with function in1 = mult_B_Output1, function in2 = mult_C_Output1, function out1 = mult_BplusC_Output1
+end
+
 namespace NS_mult_C
   clone rvs_simulink.T_Constant with function out1 = mult_C_Output1
+end
+
+namespace NS_mult_Ldistrib
+  goal G_mult_Ldistrib: forall k: int.  mult_ABplusAC_Output1 k =  mult_AtimesBplusC_Output1 k
+end
+
+namespace NS_mult_Rdistrib
+  goal G_mult_Rdistrib: forall k: int.  mult_ACplusBC_Output1 k =  mult_AplusBtimesC_Output1 k
+end
+
+namespace NS_mult_commuteShouldFail
+  goal G_mult_commuteShouldFail: forall k: int.  mult_BA_Output1 k =  mult_AB_Output1 k
 end
 
 namespace NS_mult_monoid

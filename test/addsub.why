@@ -1,0 +1,54 @@
+theory T_addsub
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function addsub_A_Output1 int : matrix
+function addsub_AminusB_Output1 int : matrix
+function addsub_AplusA_Output1 int : matrix
+function addsub_AplusB_Output1 int : matrix
+function addsub_B_Output1 int : matrix
+function addsub_BplusA_Output1 int : matrix
+function addsub_rvsAdd2_Output1 int : matrix
+
+namespace NS_addsub_A
+  clone rvs_simulink.T_Constant with function out1 = addsub_A_Output1
+end
+
+namespace NS_addsub_AminusB
+  clone rvs_simulink.T_rvsSubtract with function in1 = addsub_A_Output1, function in2 = addsub_B_Output1, function out1 = addsub_AminusB_Output1
+end
+
+namespace NS_addsub_AplusA
+  clone rvs_simulink.T_rvsAdd with function in1 = addsub_A_Output1, function in2 = addsub_A_Output1, function out1 = addsub_AplusA_Output1
+end
+
+namespace NS_addsub_AplusB
+  clone rvs_simulink.T_rvsAdd with function in1 = addsub_A_Output1, function in2 = addsub_B_Output1, function out1 = addsub_AplusB_Output1
+end
+
+namespace NS_addsub_B
+  clone rvs_simulink.T_Constant with function out1 = addsub_B_Output1
+end
+
+namespace NS_addsub_BplusA
+  clone rvs_simulink.T_rvsAdd with function in1 = addsub_B_Output1, function in2 = addsub_A_Output1, function out1 = addsub_BplusA_Output1
+end
+
+namespace NS_addsub_rvsAdd2
+  clone rvs_simulink.T_rvsAdd with function in1 = addsub_BplusA_Output1, function in2 = addsub_AminusB_Output1, function out1 = addsub_rvsAdd2_Output1
+end
+
+namespace NS_addsub_addCommute
+  goal G_addsub_addCommute: forall k: int.  addsub_AplusB_Output1 k =  addsub_BplusA_Output1 k
+end
+
+namespace NS_addsub_addSub
+  goal G_addsub_addSub: forall k: int.  addsub_rvsAdd2_Output1 k =  addsub_AplusA_Output1 k
+end
+
+namespace NS_addsub_rvsConstant
+  goal G_addsub_rvsConstant: forall k: int.  addsub_rvsAdd2_Output1 k =  addsub_rvsAdd2_Output1 (k-1)
+end
+
+end
