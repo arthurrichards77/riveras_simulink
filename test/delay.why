@@ -50,10 +50,6 @@ namespace NS_delay_x1
   clone rvs_simulink.T_Constant with function out1 = delay_x1_Output1
 end
 
-(* namespace NS_delay_rvsConstant
-  lemma L_delay_rvsConstant: forall k: int.  delay_A_Output1 k =  delay_A_Output1 (k-1)
-end *)
-
 namespace NS_delay_equ1
   goal G_delay_equ1: forall k: int.  delay_delay_Output1 k =  delay_Ax1_Output1 k
 end
