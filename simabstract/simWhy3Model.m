@@ -1,10 +1,10 @@
 classdef simWhy3Model < simAbstractSyntax
     
     properties(Constant=true)
-        known_masks = {'rvsAdd','rvsSubtract','rvsMult','rvsDelay'};
+        known_masks = {'rvsAdd','rvsSubtract','rvsMult','rvsDelay','rvsTranspose'};
         goal_masks = {'rvsEquiv','rvsConstant'};
         known_blocks = {'Constant'};
-        ignore_blocks = {'SubSystem','Inport','Scope'};
+        ignore_blocks = {'SubSystem','Inport','Outport','Scope'};
     end
     
     methods

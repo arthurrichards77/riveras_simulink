@@ -33,6 +33,16 @@ theory T_rvsMult
  axiom mult_def: forall k:int. out1 k = mat_mult (in1 k) (in2 k)
 end
 
+theory T_rvsTranspose
+ use import rvs_matrix.Matrix
+ use import rvs_matrix.MatrixTranspose
+
+ function in1 int: matrix
+ function out1 int: matrix
+
+ axiom mult_def: forall k:int. out1 k = mat_trans (in1 k)
+end
+
 theory T_rvsDelay
  use import rvs_matrix.Matrix
  use import int.Int

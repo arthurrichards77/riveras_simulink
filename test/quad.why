@@ -1,0 +1,153 @@
+theory T_quad
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function quad_A_Output1 int : matrix
+function quad_AB_Output1 int : matrix
+function quad_AtCA_Output1 int : matrix
+function quad_AtCA_M_Output1 int : matrix
+function quad_AtCA_P_Output1 int : matrix
+function quad_AtCA_ABallT_Output1 int : matrix
+function quad_AtCA_ABallT_C_Output1 int : matrix
+function quad_AtCA_ABallT_C_AB_Output1 int : matrix
+function quad_AtCA1_Output1 int : matrix
+function quad_AtCA1_M_Output1 int : matrix
+function quad_AtCA1_P_Output1 int : matrix
+function quad_AtCA1_ABallT_Output1 int : matrix
+function quad_AtCA1_ABallT_C_Output1 int : matrix
+function quad_AtCA1_ABallT_C_AB_Output1 int : matrix
+function quad_At_BplusC_A_Output1 int : matrix
+function quad_At_BplusC_A_M_Output1 int : matrix
+function quad_At_BplusC_A_P_Output1 int : matrix
+function quad_At_BplusC_A_ABallT_Output1 int : matrix
+function quad_At_BplusC_A_ABallT_C_Output1 int : matrix
+function quad_At_BplusC_A_ABallT_C_AB_Output1 int : matrix
+function quad_At_BplusC_A1_Output1 int : matrix
+function quad_At_BplusC_A1_M_Output1 int : matrix
+function quad_At_BplusC_A1_P_Output1 int : matrix
+function quad_At_BplusC_A1_ABallT_Output1 int : matrix
+function quad_At_BplusC_A1_ABallT_C_Output1 int : matrix
+function quad_At_BplusC_A1_ABallT_C_AB_Output1 int : matrix
+function quad_At_BplusC_A2_Output1 int : matrix
+function quad_At_BplusC_A2_M_Output1 int : matrix
+function quad_At_BplusC_A2_P_Output1 int : matrix
+function quad_At_BplusC_A2_ABallT_Output1 int : matrix
+function quad_At_BplusC_A2_ABallT_C_Output1 int : matrix
+function quad_At_BplusC_A2_ABallT_C_AB_Output1 int : matrix
+function quad_B_Output1 int : matrix
+function quad_BplusC_Output1 int : matrix
+function quad_BplusC1_Output1 int : matrix
+function quad_C_Output1 int : matrix
+function quad_quad_Output1 int : matrix
+function quad_quad_M_Output1 int : matrix
+function quad_quad_P_Output1 int : matrix
+function quad_quad_ABallT_Output1 int : matrix
+function quad_quad_ABallT_C_Output1 int : matrix
+function quad_quad_ABallT_C_AB_Output1 int : matrix
+
+namespace NS_quad_A
+  clone rvs_simulink.T_Constant with function out1 = quad_A_Output1
+end
+
+namespace NS_quad_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_A_Output1, function in2 = quad_B_Output1, function out1 = quad_AB_Output1
+end
+
+namespace NS_quad_AtCA_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_A_Output1, function out1 = quad_AtCA_ABallT_Output1
+end
+
+namespace NS_quad_AtCA_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_AtCA_ABallT_Output1, function in2 = quad_C_Output1, function out1 = quad_AtCA_ABallT_C_Output1
+end
+
+namespace NS_quad_AtCA_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_AtCA_ABallT_C_Output1, function in2 = quad_A_Output1, function out1 = quad_AtCA_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_AtCA1_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_B_Output1, function out1 = quad_AtCA1_ABallT_Output1
+end
+
+namespace NS_quad_AtCA1_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_AtCA1_ABallT_Output1, function in2 = quad_AtCA_ABallT_C_AB_Output1, function out1 = quad_AtCA1_ABallT_C_Output1
+end
+
+namespace NS_quad_AtCA1_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_AtCA1_ABallT_C_Output1, function in2 = quad_B_Output1, function out1 = quad_AtCA1_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_At_BplusC_A_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_A_Output1, function out1 = quad_At_BplusC_A_ABallT_Output1
+end
+
+namespace NS_quad_At_BplusC_A_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A_ABallT_Output1, function in2 = quad_BplusC_Output1, function out1 = quad_At_BplusC_A_ABallT_C_Output1
+end
+
+namespace NS_quad_At_BplusC_A_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A_ABallT_C_Output1, function in2 = quad_A_Output1, function out1 = quad_At_BplusC_A_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_At_BplusC_A1_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_A_Output1, function out1 = quad_At_BplusC_A1_ABallT_Output1
+end
+
+namespace NS_quad_At_BplusC_A1_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A1_ABallT_Output1, function in2 = quad_B_Output1, function out1 = quad_At_BplusC_A1_ABallT_C_Output1
+end
+
+namespace NS_quad_At_BplusC_A1_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A1_ABallT_C_Output1, function in2 = quad_A_Output1, function out1 = quad_At_BplusC_A1_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_At_BplusC_A2_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_A_Output1, function out1 = quad_At_BplusC_A2_ABallT_Output1
+end
+
+namespace NS_quad_At_BplusC_A2_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A2_ABallT_Output1, function in2 = quad_C_Output1, function out1 = quad_At_BplusC_A2_ABallT_C_Output1
+end
+
+namespace NS_quad_At_BplusC_A2_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_At_BplusC_A2_ABallT_C_Output1, function in2 = quad_A_Output1, function out1 = quad_At_BplusC_A2_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_B
+  clone rvs_simulink.T_Constant with function out1 = quad_B_Output1
+end
+
+namespace NS_quad_BplusC
+  clone rvs_simulink.T_rvsAdd with function in1 = quad_B_Output1, function in2 = quad_C_Output1, function out1 = quad_BplusC_Output1
+end
+
+namespace NS_quad_BplusC1
+  clone rvs_simulink.T_rvsAdd with function in1 = quad_At_BplusC_A2_ABallT_C_AB_Output1, function in2 = quad_At_BplusC_A1_ABallT_C_AB_Output1, function out1 = quad_BplusC1_Output1
+end
+
+namespace NS_quad_C
+  clone rvs_simulink.T_Constant with function out1 = quad_C_Output1
+end
+
+namespace NS_quad_quad_ABallT
+  clone rvs_simulink.T_rvsTranspose with function in1 = quad_AB_Output1, function out1 = quad_quad_ABallT_Output1
+end
+
+namespace NS_quad_quad_ABallT_C
+  clone rvs_simulink.T_rvsMult with function in1 = quad_quad_ABallT_Output1, function in2 = quad_C_Output1, function out1 = quad_quad_ABallT_C_Output1
+end
+
+namespace NS_quad_quad_ABallT_C_AB
+  clone rvs_simulink.T_rvsMult with function in1 = quad_quad_ABallT_C_Output1, function in2 = quad_AB_Output1, function out1 = quad_quad_ABallT_C_AB_Output1
+end
+
+namespace NS_quad_quad_equiv
+  goal G_quad_quad_equiv: forall k: int.  quad_quad_ABallT_C_AB_Output1 k =  quad_AtCA1_ABallT_C_AB_Output1 k
+end
+
+namespace NS_quad_quad_equiv1
+  goal G_quad_quad_equiv1: forall k: int.  quad_At_BplusC_A_ABallT_C_AB_Output1 k =  quad_BplusC1_Output1 k
+end
+
+end
