@@ -1,0 +1,79 @@
+theory T_lyap
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function lyap_A_Output1 int : matrix
+function lyap_Ax_Output1 int : matrix
+function lyap_AxplusBu_Output1 int : matrix
+function lyap_B_Output1 int : matrix
+function lyap_Bu_Output1 int : matrix
+function lyap_K_Output1 int : matrix
+function lyap_Verification_A_Output1 int : matrix
+function lyap_Verification_B_Output1 int : matrix
+function lyap_Verification_K_Output1 int : matrix
+function lyap_Verification_x_Output1 int : matrix
+function lyap_Verification_AplusBK_Output1 int : matrix
+function lyap_Verification_AplusBKx_delayed_Output1 int : matrix
+function lyap_Verification_BK_Output1 int : matrix
+function lyap_Verification_x_delayed_Output1 int : matrix
+function lyap_uEqKx_Output1 int : matrix
+function lyap_x_Output1 int : matrix
+
+namespace NS_lyap_A
+  clone rvs_simulink.T_Constant with function out1 = lyap_A_Output1
+end
+
+namespace NS_lyap_Ax
+  clone rvs_simulink.T_rvsMult with function in1 = lyap_A_Output1, function in2 = lyap_x_Output1, function out1 = lyap_Ax_Output1
+end
+
+namespace NS_lyap_AxplusBu
+  clone rvs_simulink.T_rvsAdd with function in1 = lyap_Ax_Output1, function in2 = lyap_Bu_Output1, function out1 = lyap_AxplusBu_Output1
+end
+
+namespace NS_lyap_B
+  clone rvs_simulink.T_Constant with function out1 = lyap_B_Output1
+end
+
+namespace NS_lyap_Bu
+  clone rvs_simulink.T_rvsMult with function in1 = lyap_B_Output1, function in2 = lyap_uEqKx_Output1, function out1 = lyap_Bu_Output1
+end
+
+namespace NS_lyap_K
+  clone rvs_simulink.T_Constant with function out1 = lyap_K_Output1
+end
+
+namespace NS_lyap_Verification_AplusBK
+  clone rvs_simulink.T_rvsAdd with function in1 = lyap_Verification_BK_Output1, function in2 = lyap_A_Output1, function out1 = lyap_Verification_AplusBK_Output1
+end
+
+namespace NS_lyap_Verification_AplusBKx_delayed
+  clone rvs_simulink.T_rvsMult with function in1 = lyap_Verification_AplusBK_Output1, function in2 = lyap_Verification_x_delayed_Output1, function out1 = lyap_Verification_AplusBKx_delayed_Output1
+end
+
+namespace NS_lyap_Verification_BK
+  clone rvs_simulink.T_rvsMult with function in1 = lyap_B_Output1, function in2 = lyap_K_Output1, function out1 = lyap_Verification_BK_Output1
+end
+
+namespace NS_lyap_Verification_x_delayed
+  clone rvs_simulink.T_rvsDelay with function in1 = lyap_x_Output1, function out1 = lyap_Verification_x_delayed_Output1
+end
+
+namespace NS_lyap_uEqKx
+  clone rvs_simulink.T_rvsMult with function in1 = lyap_K_Output1, function in2 = lyap_x_Output1, function out1 = lyap_uEqKx_Output1
+end
+
+namespace NS_lyap_x
+  clone rvs_simulink.T_rvsDelay with function in1 = lyap_AxplusBu_Output1, function out1 = lyap_x_Output1
+end
+
+namespace NS_lyap_Verification_AplusBK_const
+  goal G_lyap_Verification_AplusBK_const: forall k: int.  lyap_Verification_AplusBK_Output1 k =  lyap_Verification_AplusBK_Output1 (k-1)
+end
+
+namespace NS_lyap_Verification_clSys_equiv
+  goal G_lyap_Verification_clSys_equiv: forall k: int.  lyap_Verification_AplusBKx_delayed_Output1 k =  lyap_x_Output1 k
+end
+
+end
