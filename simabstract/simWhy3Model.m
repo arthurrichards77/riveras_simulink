@@ -4,6 +4,7 @@ classdef simWhy3Model < simAbstractSyntax
         known_masks = {'rvsAdd','rvsSubtract','rvsMult','rvsDelay'};
         goal_masks = {'rvsEquiv','rvsConstant'};
         known_blocks = {'Constant'};
+        ignore_blocks = {'SubSystem','Inport','Scope'};
     end
     
     methods
@@ -36,6 +37,8 @@ classdef simWhy3Model < simAbstractSyntax
                     obj.clone_mask(fid,ii)
                 elseif any(strcmp(obj.blocks{ii}.block_type,obj.known_blocks)),
                     obj.clone_block(fid,ii)
+                elseif any(strcmp(obj.blocks{ii}.block_type,obj.ignore_blocks)),
+                    % do nothing - blocks intended to be skipped
                 elseif any(strcmp(obj.blocks{ii}.mask_type,obj.goal_masks)),
                     % do nothing for now - will do all goals at the end
                 else,

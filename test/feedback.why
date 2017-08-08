@@ -9,20 +9,16 @@ function feedback_AxplusBu_Output1 int : matrix
 function feedback_B_Output1 int : matrix
 function feedback_Bu_Output1 int : matrix
 function feedback_K_Output1 int : matrix
-function feedback_Subsystem_A_Output1 int : matrix
-function feedback_Subsystem_B_Output1 int : matrix
-function feedback_Subsystem_K_Output1 int : matrix
-function feedback_Subsystem_x_Output1 int : matrix
-function feedback_Subsystem_x_next_Output1 int : matrix
-function feedback_Subsystem_AplusBK_Output1 int : matrix
-function feedback_Subsystem_AplusBKx_Output1 int : matrix
-function feedback_Subsystem_AplusBKx1_Output1 int : matrix
-function feedback_Subsystem_BK_Output1 int : matrix
-function feedback_Subsystem_x0_Output1 int : matrix
-function feedback_Subsystem_x1_Output1 int : matrix
+function feedback_Verification_A_Output1 int : matrix
+function feedback_Verification_B_Output1 int : matrix
+function feedback_Verification_K_Output1 int : matrix
+function feedback_Verification_x_Output1 int : matrix
+function feedback_Verification_AplusBK_Output1 int : matrix
+function feedback_Verification_AplusBKx_delayed_Output1 int : matrix
+function feedback_Verification_BK_Output1 int : matrix
+function feedback_Verification_x_delayed_Output1 int : matrix
 function feedback_uEqKx_Output1 int : matrix
 function feedback_x_Output1 int : matrix
-function feedback_x0_Output1 int : matrix
 
 namespace NS_feedback_A
   clone rvs_simulink.T_Constant with function out1 = feedback_A_Output1
@@ -48,28 +44,20 @@ namespace NS_feedback_K
   clone rvs_simulink.T_Constant with function out1 = feedback_K_Output1
 end
 
-namespace NS_feedback_Subsystem_AplusBK
-  clone rvs_simulink.T_rvsAdd with function in1 = feedback_Subsystem_BK_Output1, function in2 = feedback_A_Output1, function out1 = feedback_Subsystem_AplusBK_Output1
+namespace NS_feedback_Verification_AplusBK
+  clone rvs_simulink.T_rvsAdd with function in1 = feedback_Verification_BK_Output1, function in2 = feedback_A_Output1, function out1 = feedback_Verification_AplusBK_Output1
 end
 
-namespace NS_feedback_Subsystem_AplusBKx
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_Subsystem_AplusBK_Output1, function in2 = feedback_x_Output1, function out1 = feedback_Subsystem_AplusBKx_Output1
+namespace NS_feedback_Verification_AplusBKx_delayed
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_Verification_AplusBK_Output1, function in2 = feedback_Verification_x_delayed_Output1, function out1 = feedback_Verification_AplusBKx_delayed_Output1
 end
 
-namespace NS_feedback_Subsystem_AplusBKx1
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_Subsystem_AplusBK_Output1, function in2 = feedback_Subsystem_x1_Output1, function out1 = feedback_Subsystem_AplusBKx1_Output1
+namespace NS_feedback_Verification_BK
+  clone rvs_simulink.T_rvsMult with function in1 = feedback_B_Output1, function in2 = feedback_K_Output1, function out1 = feedback_Verification_BK_Output1
 end
 
-namespace NS_feedback_Subsystem_BK
-  clone rvs_simulink.T_rvsMult with function in1 = feedback_B_Output1, function in2 = feedback_K_Output1, function out1 = feedback_Subsystem_BK_Output1
-end
-
-namespace NS_feedback_Subsystem_x0
-  clone rvs_simulink.T_Constant with function out1 = feedback_Subsystem_x0_Output1
-end
-
-namespace NS_feedback_Subsystem_x1
-  clone rvs_simulink.T_rvsDelay with function in1 = feedback_x_Output1, function in2 = feedback_Subsystem_x0_Output1, function out1 = feedback_Subsystem_x1_Output1
+namespace NS_feedback_Verification_x_delayed
+  clone rvs_simulink.T_rvsDelay with function in1 = feedback_x_Output1, function out1 = feedback_Verification_x_delayed_Output1
 end
 
 namespace NS_feedback_uEqKx
@@ -77,23 +65,15 @@ namespace NS_feedback_uEqKx
 end
 
 namespace NS_feedback_x
-  clone rvs_simulink.T_rvsDelay with function in1 = feedback_AxplusBu_Output1, function in2 = feedback_x0_Output1, function out1 = feedback_x_Output1
+  clone rvs_simulink.T_rvsDelay with function in1 = feedback_AxplusBu_Output1, function out1 = feedback_x_Output1
 end
 
-namespace NS_feedback_x0
-  clone rvs_simulink.T_Constant with function out1 = feedback_x0_Output1
+namespace NS_feedback_Verification_AplusBK_const
+  goal G_feedback_Verification_AplusBK_const: forall k: int.  feedback_Verification_AplusBK_Output1 k =  feedback_Verification_AplusBK_Output1 (k-1)
 end
 
-namespace NS_feedback_Subsystem_equ
-  goal G_feedback_Subsystem_equ: forall k: int.  feedback_AxplusBu_Output1 k =  feedback_Subsystem_AplusBKx_Output1 k
-end
-
-namespace NS_feedback_Subsystem_equ1
-  goal G_feedback_Subsystem_equ1: forall k: int.  feedback_Subsystem_AplusBKx1_Output1 k =  feedback_x_Output1 k
-end
-
-namespace NS_feedback_Subsystem_rvsConstant
-  goal G_feedback_Subsystem_rvsConstant: forall k: int.  feedback_Subsystem_AplusBK_Output1 k =  feedback_Subsystem_AplusBK_Output1 (k-1)
+namespace NS_feedback_Verification_clSys_equiv
+  goal G_feedback_Verification_clSys_equiv: forall k: int.  feedback_Verification_AplusBKx_delayed_Output1 k =  feedback_x_Output1 k
 end
 
 end
