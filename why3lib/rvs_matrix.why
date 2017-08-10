@@ -1,4 +1,4 @@
-(* Created by Dejanira Araiza-Illan and Arthur Richards, UoB, 2014 *)
+(* Created bxy Dejanira Araiza-Illan and Arthur Richards, UoB, 2014 *)
 
 theory Matrix
 
@@ -177,7 +177,7 @@ theory MatrixMultiply
 
   use import MatrixZero
   
-  (* multiply by zero gives 0, both ways - a*0 = 0 *)
+  (* multiply bxy zero gives 0, both ways - a*0 = 0 *)
   lemma mat_postmult_zero: forall a b : matrix. (mat_is_zero b) -> mat_is_zero (mat_mult a b) 
   lemma mat_premult_zero: forall a b : matrix. (mat_is_zero a) -> mat_is_zero (mat_mult a b) 
 
@@ -196,8 +196,22 @@ theory MatrixMultiply
 
   lemma mult_minus_post: forall a b : matrix. mat_mult a (mat_minus b) = mat_minus (mat_mult a b)
 
-  (* lemma mult_sub3: forall a b : matrix. mat_mult a (mat_minus b) = mat_minus (mat_mult a b) *)
-  (* lemma sanchk1: forall a b c x y : matrix. (x = mat_mult a (mat_subtract b c)) /\ (y = mat_subtract (mat_mult a b) (mat_mult a c)) -> (y=x) *)
+  (* === QUADRATIC STUFF === *)
+
+  (* a.(b.c) = (a.b).c *)
+  lemma quad_chk: forall a b c : matrix. mat_mult (mat_mult a b) c = mat_mult a (mat_mult b c)
+
+  (* a.(b+c).d = a.(b.d + c.d) *)
+  lemma quad_add1: forall a b c d : matrix. mat_mult (mat_mult a (mat_add b c)) d = mat_mult a (mat_add (mat_mult b d) (mat_mult c d))
+
+  (* a*(b+c)*d = a*b*d + a*c*d *)
+  lemma quad_add: forall a b c d : matrix. mat_mult (mat_mult a (mat_add b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult c d))
+
+  lemma quad_sub1: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult (mat_minus c) d))
+  lemma quad_sub2: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_minus (mat_mult a (mat_mult c d)))
+
+  (* a*(b-c)*d = a*b*d - a*c*d *)
+  lemma quad_sub: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_subtract (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult c d))
 
 end
 
@@ -229,31 +243,7 @@ theory MatrixTranspose
 
 end
 
-theory MatrixQuadForm
 
-  use import Matrix
-  use import MatrixAdd
-  use import MatrixZero
-  use import MatrixMinus
-  use import MatrixSubtract
-  use import MatrixMultiply
-
-  (* a.(b.c) = (a.b).c *)
-  lemma quad_chk: forall a b c : matrix. mat_mult (mat_mult a b) c = mat_mult a (mat_mult b c)
-
-  (* a.(b+c).d = a.(b.d + c.d) *)
-  lemma quad_add1: forall a b c d : matrix. mat_mult (mat_mult a (mat_add b c)) d = mat_mult a (mat_add (mat_mult b d) (mat_mult c d))
-
-  (* a*(b+c)*d = a*b*d + a*c*d *)
-  lemma quad_add: forall a b c d : matrix. mat_mult (mat_mult a (mat_add b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult c d))
-
-  lemma quad_sub1: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult (mat_minus c) d))
-  lemma quad_sub2: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_add (mat_mult a (mat_mult b d)) (mat_minus (mat_mult a (mat_mult c d)))
-
-  (* a*(b-c)*d = a*b*d - a*c*d *)
-  lemma quad_sub: forall a b c d : matrix. mat_mult (mat_mult a (mat_subtract b c)) d = mat_subtract (mat_mult a (mat_mult b d)) (mat_mult a (mat_mult c d))
-
-end
 
 theory MatrixConcat
 
@@ -263,6 +253,7 @@ theory MatrixConcat
   use import MatrixMinus
   use import MatrixSubtract
   use import MatrixMultiply
+  use import MatrixTranspose
 
   (* --------- CONCAT ---------- *)
 
@@ -270,14 +261,33 @@ theory MatrixConcat
   function hcat matrix matrix: matrix
   function vcat matrix matrix: matrix
 
-  (* axioms for addition, part by part *)
-  (* done via intermediate symbols so only implied if sizes are OK *)
-  (* [a;c] + [b;d] = [a+b; c+d] *)
-  axiom mat_cat_add1: forall a b c d x y : matrix. (x = mat_add a b) /\ (y = mat_add c d) -> (vcat x y) = mat_add (vcat a c) (vcat b d)
-  (* [a c] + [b d] = [a+b c+d] *)
-  axiom mat_cat_add2: forall a b c d x y : matrix. (x = mat_add a b) /\ (y = mat_add c d) -> (hcat x y) = mat_add (hcat a c) (hcat b d)
+  (* axioms for monoid property *)
+  axiom mat_hcat_monoid: forall a b c : matrix. hcat (hcat a b) c = hcat a (hcat b c)
+  axiom mat_vcat_monoid: forall a b c : matrix. vcat (vcat a b) c = vcat a (vcat b c)
+
+  (* relationship to transpose [a b]' = [a'; b'] *)
+  axiom mat_hcat_transpose: forall a b : matrix. mat_trans (hcat a b) = vcat (mat_trans a) (mat_trans b)
+  (* [a;b]' = [a' b'] *)
+  lemma mat_vcat_transpose: forall a b : matrix. mat_trans (vcat a b) = hcat (mat_trans a) (mat_trans b)
+
+  (* [a b; c d] = [[a;c] [b;d]] *)
+  axiom mat_cat_order: forall a b c d : matrix. vcat (hcat a b) (hcat c d) = hcat (vcat a c) (vcat b d)
+
+  (* [a;b]*c = [ac;bc] *)
+  axiom mat_vcat_premult: forall a b c : matrix. mat_mult (vcat a b) c = vcat (mat_mult a c) (mat_mult b c)
+
+  (* a*[b c] = [ab ac] *)
+  lemma mat_hcat_postmult: forall a b c : matrix. mat_mult a (hcat b c) = hcat (mat_mult a b) (mat_mult a c)
 
   (* [a b] * [c;d] = a*c + b*d *)
-  axiom mat_cat_mult: forall a b c d x y z : matrix. (x = mat_mult a c) /\ (y = mat_mult b d) /\ (z = mat_add x y) -> z = mat_mult (hcat a b) (vcat c d)
+  axiom mat_cat_mult: forall a b c d : matrix. mat_mult (hcat a b) (vcat c d) = mat_add (mat_mult a c) (mat_mult b d)
+
+  (* axioms for addition, part by part *)
+  (* [a;c] + [b;d] = [a+b; c+d] *)
+  axiom mat_vcat_add: forall a b c d : matrix. vcat (mat_add a b) (mat_add c d) = mat_add (vcat a c) (vcat b d)
+  (* [a c] + [b d] = [a+b c+d] *)
+  lemma mat_hcat_add: forall a b c d : matrix. hcat (mat_add a b) (mat_add c d) = mat_add (hcat a c) (hcat b d)
+
+  lemma mat_cat_2x2_chk: forall a b c d w x y z aw bxy ax bz cw dy cx dz : matrix. (aw = mat_mult a w) /\ (bxy = mat_mult b y) /\ (ax = mat_mult a x) /\ (bz = mat_mult b z) /\ (cw = mat_mult c w) /\ (dy = mat_mult d y) /\ (cx = mat_mult c x) /\ (dz = mat_mult d z) -> mat_mult (vcat (hcat a b) (hcat c d)) (vcat (hcat w x) (hcat y z)) = vcat (hcat (mat_add aw bxy) (mat_add ax bz)) (hcat (mat_add cw dy) (mat_add cx dz))
 
 end  
