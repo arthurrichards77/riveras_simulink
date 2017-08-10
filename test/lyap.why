@@ -25,8 +25,6 @@ function lyap_Verification_ActPAc_Mt_Output1 int : matrix
 function lyap_Verification_ActPAc_MtP_Output1 int : matrix
 function lyap_Verification_ActPAc_MtPM__Output1 int : matrix
 function lyap_Verification_ActPAc_minus_P_Output1 int : matrix
-function lyap_Verification_ActPAc_minus_P1_Output1 int : matrix
-function lyap_Verification_ActPAc_minus_P2_Output1 int : matrix
 function lyap_Verification_AplusBK_Output1 int : matrix
 function lyap_Verification_AplusBKx_delayed_Output1 int : matrix
 function lyap_Verification_BK_Output1 int : matrix
@@ -106,14 +104,6 @@ end
 
 namespace NS_lyap_Verification_ActPAc_minus_P
   clone rvs_simulink.T_rvsSubtract with function in1 = lyap_Verification_ActPAc_MtPM__Output1, function in2 = lyap_P_Output1, function out1 = lyap_Verification_ActPAc_minus_P_Output1
-end
-
-namespace NS_lyap_Verification_ActPAc_minus_P1
-  clone rvs_simulink.T_rvsSubtract with function in1 = lyap_Verification_xdel_ActPAc_xdel_MtPM__Output1, function in2 = lyap_Verification_V_x_del_MtPM__Output1, function out1 = lyap_Verification_ActPAc_minus_P1_Output1
-end
-
-namespace NS_lyap_Verification_ActPAc_minus_P2
-  clone rvs_simulink.T_rvsSubtract with function in1 = lyap_quad_ABallT_C_AB_Output1, function in2 = lyap_Verification_V_x_del_MtPM__Output1, function out1 = lyap_Verification_ActPAc_minus_P2_Output1
 end
 
 namespace NS_lyap_Verification_AplusBK
@@ -196,36 +186,28 @@ namespace NS_lyap_x
   clone rvs_simulink.T_rvsDelay with function in1 = lyap_AxplusBu_Output1, function out1 = lyap_x_Output1
 end
 
-namespace NS_lyap_Verification_V_x_del_equiv_V_del
-  lemma G_lyap_Verification_V_x_del_equiv_V_del: forall k: int.  lyap_Verification_V_x_del_MtPM__Output1 k =  lyap_Verification_V_del_Output1 k
-end
-
-namespace NS_lyap_Verification_V_x_vs_xdel_APA_xdel
-  lemma G_lyap_Verification_V_x_vs_xdel_APA_xdel: forall k: int.  lyap_Verification_xdel_ActPAc_xdel_MtPM__Output1 k =  lyap_quad_ABallT_C_AB_Output1 k
-end
-
 namespace NS_lyap_Verification_AplusBK_const
-  goal G_lyap_Verification_AplusBK_const: forall k: int.  lyap_Verification_AplusBK_Output1 k =  lyap_Verification_AplusBK_Output1 (k-1)
+  lemma G_lyap_Verification_AplusBK_const: forall k: int.  lyap_Verification_AplusBK_Output1 k =  lyap_Verification_AplusBK_Output1 (k-1)
 end
 
-namespace NS_lyap_Verification_clSys_equiv
-  goal G_lyap_Verification_clSys_equiv: forall k: int.  lyap_Verification_AplusBKx_delayed_Output1 k =  lyap_x_Output1 k
+namespace NS_lyap_Verification_Qconst
+  lemma G_lyap_Verification_Qconst: forall k: int.  lyap_Verification_ActPAc_minus_P_Output1 k =  lyap_Verification_ActPAc_minus_P_Output1 (k-1)
+end
+
+namespace NS_lyap_Verification_V_vs_xdelAPAx_del
+  lemma G_lyap_Verification_V_vs_xdelAPAx_del: forall k: int.  lyap_Verification_xdel_ActPAc_xdel_MtPM__Output1 k =  lyap_quad_ABallT_C_AB_Output1 k
+end
+
+namespace NS_lyap_Verification_Vdel_vs_V_xdel
+  lemma G_lyap_Verification_Vdel_vs_V_xdel: forall k: int.  lyap_Verification_V_x_del_MtPM__Output1 k =  lyap_Verification_V_del_Output1 k
+end
+
+namespace NS_lyap_Verification_clSysEquiv
+  lemma G_lyap_Verification_clSysEquiv: forall k: int.  lyap_Verification_AplusBKx_delayed_Output1 k =  lyap_x_Output1 k
 end
 
 namespace NS_lyap_Verification_deltaV_equiv
   goal G_lyap_Verification_deltaV_equiv: forall k: int.  lyap_Verification_deltaV_pred_MtPM__Output1 k =  lyap_rvsSubtract_Output1 k
-end
-
-namespace NS_lyap_Verification_diffs_equiv
-  goal G_lyap_Verification_diffs_equiv: forall k: int.  lyap_Verification_ActPAc_minus_P1_Output1 k =  lyap_Verification_ActPAc_minus_P2_Output1 k
-end
-
-namespace NS_lyap_Verification_quad_equiv
-  goal G_lyap_Verification_quad_equiv: forall k: int.  lyap_Verification_ActPAc_minus_P1_Output1 k =  lyap_Verification_deltaV_pred_MtPM__Output1 k
-end
-
-namespace NS_lyap_Verification_sigs_equiv
-  goal G_lyap_Verification_sigs_equiv: forall k: int.  lyap_Verification_ActPAc_minus_P1_Output1 k =  lyap_rvsSubtract_Output1 k
 end
 
 end

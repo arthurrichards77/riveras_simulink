@@ -1,4 +1,4 @@
-function rvs_prove(prover,mdl_name)
+function sa = rvs_prove(prover,mdl_name)
 
 % run on gcs unless specified
 if nargin<2,
@@ -26,5 +26,8 @@ end
 cmd = sprintf('why3 prove -L ../why3lib -P %s -t 10 %s',prover,why_name)
 %cmd = sprintf('%s %s %s',which('run_why3.sh'),prover,why_name)
 
+% path messing abaht: MATLAB sets something that conflicts with why3
 setenv('LD_LIBRARY_PATH')
+
+% run it
 system(cmd)
