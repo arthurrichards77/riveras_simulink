@@ -4,6 +4,14 @@ function rvs_prove(prover,mdl_name)
 if nargin<2,
     mdl_name = gcs
 end
+
+% chop off everything after any first slash
+first_delimit = find(mdl_name=='/',1,'first');
+if ~isempty(first_delimit),
+    mdl_name = mdl_name(1:(first_delimit-1));
+    warning('Working from top level of the model')
+end
+
 why_name = sprintf('%s.why',mdl_name);
 
 % build the abstract model

@@ -241,17 +241,35 @@ theory MatrixTranspose
   lemma mat_trans_minus: forall a : matrix. mat_trans (mat_minus a) = mat_minus (mat_trans a)
   lemma mat_trans_sub: forall a b : matrix. mat_subtract (mat_trans a) (mat_trans b) = mat_trans (mat_subtract a b)
 
+  (* more quadratic stuff *)
+  (* (ab)'c(ab) = b'(a'ca)b *)
+  lemma mat_quad: forall a b c : matrix. mat_mult (mat_trans (mat_mult a b)) (mat_mult c (mat_mult a b)) = mat_mult (mat_trans b) (mat_mult (mat_mult (mat_trans a) (mat_mult c a)) b)
+  (* a'ba - a'ca = a'(b-c)a *)
+  lemma mat_quad_sub: forall a b c : matrix. mat_subtract (mat_mult (mat_trans a) (mat_mult b a)) (mat_mult (mat_trans a) (mat_mult c a)) = mat_mult (mat_trans a) (mat_mult (mat_subtract b c) a)
+
 end
 
+theory MatrixIdentity
 
+  use import Matrix
+  use import MatrixMultiply
+  use import MatrixTranspose
+
+  (* concept of identity matrix *)
+  predicate mat_is_ident matrix
+
+  (* defined that if a*b=a then b is identity *)
+  axiom mat_ident_def1: forall a b : matrix. (mat_is_ident b) -> ((mat_mult a b) = a)
+  axiom mat_ident_def2: forall a b : matrix. (mat_is_ident a) -> ((mat_mult a b) = b)
+
+  lemma mat_ident_is_sym_unknown: forall a : matrix. mat_is_ident a -> mat_is_ident (mat_trans a)
+
+end
 
 theory MatrixConcat
 
   use import Matrix
   use import MatrixAdd
-  use import MatrixZero
-  use import MatrixMinus
-  use import MatrixSubtract
   use import MatrixMultiply
   use import MatrixTranspose
 
@@ -289,5 +307,9 @@ theory MatrixConcat
   lemma mat_hcat_add: forall a b c d : matrix. hcat (mat_add a b) (mat_add c d) = mat_add (hcat a c) (hcat b d)
 
   lemma mat_cat_2x2_chk: forall a b c d w x y z aw bxy ax bz cw dy cx dz : matrix. (aw = mat_mult a w) /\ (bxy = mat_mult b y) /\ (ax = mat_mult a x) /\ (bz = mat_mult b z) /\ (cw = mat_mult c w) /\ (dy = mat_mult d y) /\ (cx = mat_mult c x) /\ (dz = mat_mult d z) -> mat_mult (vcat (hcat a b) (hcat c d)) (vcat (hcat w x) (hcat y z)) = vcat (hcat (mat_add aw bxy) (mat_add ax bz)) (hcat (mat_add cw dy) (mat_add cx dz))
+
+  use import MatrixZero
+  use import MatrixMinus
+  use import MatrixSubtract
 
 end  
