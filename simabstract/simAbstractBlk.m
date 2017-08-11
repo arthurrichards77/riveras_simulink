@@ -41,6 +41,10 @@ classdef simAbstractBlk < handle
             flag = strcmp(self.block_type,'Outport');
         end
         
+        function flag=isFromBlk(self)
+            flag = strcmp(self.block_type,'From');
+        end
+        
         function disp(obj)
             fprintf('\n*** BLOCK: %s (%s / %s) ***\n',obj.matlab_name,obj.block_type,obj.mask_type);
             disp('INPUTS');

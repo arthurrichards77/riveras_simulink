@@ -23,6 +23,8 @@ classdef simAbstractSyntax < handle
                     obj.redirectOutport(this_blk);
                 elseif this_blk.isInport(),
                     obj.redirectInport(this_blk);
+                elseif this_blk.isFromBlk(),
+                    obj.redirectFrom(this_blk);
                 end
             end
         end
@@ -128,6 +130,21 @@ classdef simAbstractSyntax < handle
             parent_blk_obj = obj.getBlockByMatlabName(parent_name);
             parent_in_sig = parent_blk_obj.inputs{port_num};
             inport_out_sig.redirectSig(parent_in_sig);
+        end
+        
+        function redirectFrom(obj,blk_obj)
+            %fprintf('%s is a From block\n',blk_obj.matlab_name)
+            from_out_sig = blk_obj.outputs{1};
+            from_tag = get_param(blk_obj.matlab_name,'GotoTag');
+            src_blk_name = find_system(obj.mdl_name,'BlockType','Goto','GotoTag',from_tag);
+            src_blk_obj = obj.getBlockByMatlabName(src_blk_name);
+            src_sig = src_blk_obj.inputs{1};
+            from_out_sig.redirectSig(src_sig);
+            % check for global tag - otherwise risky
+            vis = get_param(src_blk_obj.matlab_name,'TagVisibility');
+            if ~strcmp(vis,'global'),
+                error(sprintf('%s : Only global Goto tags supported.',src_blk_obj.matlab_name))
+            end
         end
         
     end

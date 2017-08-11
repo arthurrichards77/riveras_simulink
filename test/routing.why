@@ -1,0 +1,18 @@
+theory T_routing
+
+use import rvs_matrix.Matrix
+use import int.Int
+
+function routing_Constant_Output1 int : matrix
+function routing_Subsystem_In1_Output1 int : matrix
+function routing_Subsystem_From_Output1 int : matrix
+
+namespace NS_routing_Constant
+  clone rvs_simulink.T_Constant with function out1 = routing_Constant_Output1
+end
+
+namespace NS_routing_Subsystem_rvsEquiv
+  goal G_routing_Subsystem_rvsEquiv: forall k: int.  routing_Constant_Output1 k =  routing_Constant_Output1 k
+end
+
+end
