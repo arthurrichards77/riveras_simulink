@@ -12,40 +12,41 @@ function estimator_Error_Dynamics_x_Output1 int : matrix
 function estimator_Error_Dynamics_x_hat_Output1 int : matrix
 function estimator_Error_Dynamics_u_Output1 int : matrix
 function estimator_Error_Dynamics_Acle_e_Output1 int : matrix
-function estimator_Error_Dynamics_Ae_Output1 int : matrix
-function estimator_Error_Dynamics_Ae_minusLC_e_Output1 int : matrix
-function estimator_Error_Dynamics_AminusLC_Output1 int : matrix
-function estimator_Error_Dynamics_Ax_Output1 int : matrix
-function estimator_Error_Dynamics_Ax1_Output1 int : matrix
-function estimator_Error_Dynamics_Ax2_Output1 int : matrix
-function estimator_Error_Dynamics_AxhatplusBu_Output1 int : matrix
-function estimator_Error_Dynamics_AxhatplusBu1_Output1 int : matrix
-function estimator_Error_Dynamics_AxplusBu_Output1 int : matrix
-function estimator_Error_Dynamics_Bu_Output1 int : matrix
-function estimator_Error_Dynamics_Ce_Output1 int : matrix
-function estimator_Error_Dynamics_From_Output1 int : matrix
-function estimator_Error_Dynamics_From1_Output1 int : matrix
-function estimator_Error_Dynamics_From10_Output1 int : matrix
-function estimator_Error_Dynamics_From11_Output1 int : matrix
-function estimator_Error_Dynamics_From2_Output1 int : matrix
-function estimator_Error_Dynamics_From3_Output1 int : matrix
-function estimator_Error_Dynamics_From4_Output1 int : matrix
-function estimator_Error_Dynamics_From5_Output1 int : matrix
+function estimator_Error_Dynamics_Constants_AminusLC_Output1 int : matrix
+function estimator_Error_Dynamics_Constants_From2_Output1 int : matrix
+function estimator_Error_Dynamics_Constants_From4_Output1 int : matrix
+function estimator_Error_Dynamics_Constants_From5_Output1 int : matrix
+function estimator_Error_Dynamics_Constants_LC_Output1 int : matrix
 function estimator_Error_Dynamics_From6_Output1 int : matrix
-function estimator_Error_Dynamics_From7_Output1 int : matrix
-function estimator_Error_Dynamics_From8_Output1 int : matrix
-function estimator_Error_Dynamics_From9_Output1 int : matrix
-function estimator_Error_Dynamics_LC_Output1 int : matrix
-function estimator_Error_Dynamics_LCe_Output1 int : matrix
-function estimator_Error_Dynamics_LCe1_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_e_del_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_x_del_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_xhat_del_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_x_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_u_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_Aedel_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_Ax_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_Axhat_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_AxhatplusBu_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_AxplusBu_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_Bu_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_From11_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_From7_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_From8_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_From9_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_u_del_Output1 int : matrix
+function estimator_Error_Dynamics_dynamics_chk_x_del_diff1_Output1 int : matrix
 function estimator_Error_Dynamics_e_Output1 int : matrix
 function estimator_Error_Dynamics_e_del_Output1 int : matrix
-function estimator_Error_Dynamics_u_del_Output1 int : matrix
+function estimator_Error_Dynamics_sanity1_e_del_Output1 int : matrix
+function estimator_Error_Dynamics_sanity1_x_del_Output1 int : matrix
+function estimator_Error_Dynamics_sanity1_xhat_del_Output1 int : matrix
+function estimator_Error_Dynamics_sanity1_x_del_diff_Output1 int : matrix
+function estimator_Error_Dynamics_sanity2_e_Output1 int : matrix
+function estimator_Error_Dynamics_sanity2_xhat_Output1 int : matrix
+function estimator_Error_Dynamics_sanity2_x_Output1 int : matrix
+function estimator_Error_Dynamics_sanity2_xhat_plus_e_Output1 int : matrix
 function estimator_Error_Dynamics_x_del_Output1 int : matrix
-function estimator_Error_Dynamics_x_del_diff_Output1 int : matrix
-function estimator_Error_Dynamics_x_del_diff1_Output1 int : matrix
 function estimator_Error_Dynamics_xhat_del_Output1 int : matrix
-function estimator_Error_Dynamics_xhat_plus_e_Output1 int : matrix
 function estimator_From2_Output1 int : matrix
 function estimator_Observer_Output1 int : matrix
 function estimator_Observer_u_Output1 int : matrix
@@ -58,7 +59,7 @@ function estimator_Observer_From1_Output1 int : matrix
 function estimator_Observer_From2_Output1 int : matrix
 function estimator_Observer_From3_Output1 int : matrix
 function estimator_Observer_L_innov_Output1 int : matrix
-function estimator_Observer_errorChecks_In1_Output1 int : matrix
+function estimator_Observer_errorChecks_x_innov_Output1 int : matrix
 function estimator_Observer_errorChecks_Bu1_Output1 int : matrix
 function estimator_Observer_errorChecks_From4_Output1 int : matrix
 function estimator_Observer_errorChecks_From5_Output1 int : matrix
@@ -77,6 +78,7 @@ function estimator_Plant_From_Output1 int : matrix
 function estimator_Plant_From1_Output1 int : matrix
 function estimator_Plant_From2_Output1 int : matrix
 function estimator_Plant_x_Output1 int : matrix
+function estimator_rvsCut_Output1 int : matrix
 function estimator_uEqKx_Output1 int : matrix
 
 namespace NS_estimator_Constants_A
@@ -100,63 +102,47 @@ namespace NS_estimator_Constants_L
 end
 
 namespace NS_estimator_Error_Dynamics_Acle_e
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Error_Dynamics_AminusLC_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_Acle_e_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Error_Dynamics_Constants_AminusLC_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_Acle_e_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Ae
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_Ae_Output1
+namespace NS_estimator_Error_Dynamics_Constants_AminusLC
+  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_Constants_LC_Output1, function out1 = estimator_Error_Dynamics_Constants_AminusLC_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Ae_minusLC_e
-  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Error_Dynamics_Ae_Output1, function in2 = estimator_Error_Dynamics_LCe_Output1, function out1 = estimator_Error_Dynamics_Ae_minusLC_e_Output1
+namespace NS_estimator_Error_Dynamics_Constants_LC
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_L_Output1, function in2 = estimator_Constants_C_Output1, function out1 = estimator_Error_Dynamics_Constants_LC_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_AminusLC
-  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_LC_Output1, function out1 = estimator_Error_Dynamics_AminusLC_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_Aedel
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_Aedel_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Ax
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_x_del_Output1, function out1 = estimator_Error_Dynamics_Ax_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_Ax
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_x_del_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_Ax_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Ax1
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_Ax1_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_Axhat
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_xhat_del_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_Axhat_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Ax2
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_A_Output1, function in2 = estimator_Error_Dynamics_xhat_del_Output1, function out1 = estimator_Error_Dynamics_Ax2_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_AxhatplusBu
+  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Error_Dynamics_dynamics_chk_Bu_Output1, function in2 = estimator_Error_Dynamics_dynamics_chk_Axhat_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_AxhatplusBu_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_AxhatplusBu
-  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Error_Dynamics_Bu_Output1, function in2 = estimator_Error_Dynamics_Ax2_Output1, function out1 = estimator_Error_Dynamics_AxhatplusBu_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_AxplusBu
+  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Error_Dynamics_dynamics_chk_Bu_Output1, function in2 = estimator_Error_Dynamics_dynamics_chk_Ax_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_AxplusBu_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_AxhatplusBu1
-  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Error_Dynamics_AxhatplusBu_Output1, function in2 = estimator_Error_Dynamics_LCe1_Output1, function out1 = estimator_Error_Dynamics_AxhatplusBu1_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_Bu
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_Error_Dynamics_dynamics_chk_u_del_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_Bu_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_AxplusBu
-  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Error_Dynamics_Bu_Output1, function in2 = estimator_Error_Dynamics_Ax_Output1, function out1 = estimator_Error_Dynamics_AxplusBu_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_u_del
+  clone rvs_simulink.T_rvsDelay with function in1 = estimator_rvsCut_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_u_del_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Bu
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_Error_Dynamics_u_del_Output1, function out1 = estimator_Error_Dynamics_Bu_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_Ce
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_C_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_Ce_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_LC
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_L_Output1, function in2 = estimator_Constants_C_Output1, function out1 = estimator_Error_Dynamics_LC_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_LCe
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_L_Output1, function in2 = estimator_Error_Dynamics_Ce_Output1, function out1 = estimator_Error_Dynamics_LCe_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_LCe1
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Error_Dynamics_LC_Output1, function in2 = estimator_Error_Dynamics_e_del_Output1, function out1 = estimator_Error_Dynamics_LCe1_Output1
+namespace NS_estimator_Error_Dynamics_dynamics_chk_x_del_diff1
+  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Error_Dynamics_dynamics_chk_AxplusBu_Output1, function in2 = estimator_Error_Dynamics_dynamics_chk_AxhatplusBu_Output1, function out1 = estimator_Error_Dynamics_dynamics_chk_x_del_diff1_Output1
 end
 
 namespace NS_estimator_Error_Dynamics_e
@@ -167,28 +153,20 @@ namespace NS_estimator_Error_Dynamics_e_del
   clone rvs_simulink.T_rvsDelay with function in1 = estimator_Error_Dynamics_e_Output1, function out1 = estimator_Error_Dynamics_e_del_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_u_del
-  clone rvs_simulink.T_rvsDelay with function in1 = estimator_uEqKx_Output1, function out1 = estimator_Error_Dynamics_u_del_Output1
+namespace NS_estimator_Error_Dynamics_sanity1_x_del_diff
+  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Error_Dynamics_x_del_Output1, function in2 = estimator_Error_Dynamics_xhat_del_Output1, function out1 = estimator_Error_Dynamics_sanity1_x_del_diff_Output1
+end
+
+namespace NS_estimator_Error_Dynamics_sanity2_xhat_plus_e
+  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Observer_x_hat__Output1, function in2 = estimator_Error_Dynamics_e_Output1, function out1 = estimator_Error_Dynamics_sanity2_xhat_plus_e_Output1
 end
 
 namespace NS_estimator_Error_Dynamics_x_del
   clone rvs_simulink.T_rvsDelay with function in1 = estimator_Plant_x_Output1, function out1 = estimator_Error_Dynamics_x_del_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_x_del_diff
-  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Error_Dynamics_x_del_Output1, function in2 = estimator_Error_Dynamics_xhat_del_Output1, function out1 = estimator_Error_Dynamics_x_del_diff_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_x_del_diff1
-  clone rvs_simulink.T_rvsSubtract with function in1 = estimator_Error_Dynamics_AxplusBu_Output1, function in2 = estimator_Error_Dynamics_AxhatplusBu_Output1, function out1 = estimator_Error_Dynamics_x_del_diff1_Output1
-end
-
 namespace NS_estimator_Error_Dynamics_xhat_del
   clone rvs_simulink.T_rvsDelay with function in1 = estimator_Observer_x_hat__Output1, function out1 = estimator_Error_Dynamics_xhat_del_Output1
-end
-
-namespace NS_estimator_Error_Dynamics_xhat_plus_e
-  clone rvs_simulink.T_rvsAdd with function in1 = estimator_Observer_x_hat__Output1, function in2 = estimator_Error_Dynamics_e_Output1, function out1 = estimator_Error_Dynamics_xhat_plus_e_Output1
 end
 
 namespace NS_estimator_Observer_Ax
@@ -196,7 +174,7 @@ namespace NS_estimator_Observer_Ax
 end
 
 namespace NS_estimator_Observer_Bu
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_uEqKx_Output1, function out1 = estimator_Observer_Bu_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_rvsCut_Output1, function out1 = estimator_Observer_Bu_Output1
 end
 
 namespace NS_estimator_Observer_Cx
@@ -208,7 +186,7 @@ namespace NS_estimator_Observer_L_innov
 end
 
 namespace NS_estimator_Observer_errorChecks_Bu1
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Error_Dynamics_LC_Output1, function in2 = estimator_Error_Dynamics_e_Output1, function out1 = estimator_Observer_errorChecks_Bu1_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Error_Dynamics_Constants_LC_Output1, function in2 = estimator_Error_Dynamics_e_Output1, function out1 = estimator_Observer_errorChecks_Bu1_Output1
 end
 
 namespace NS_estimator_Observer_x_hat_
@@ -236,7 +214,7 @@ namespace NS_estimator_Plant_AxplusBu
 end
 
 namespace NS_estimator_Plant_Bu
-  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_uEqKx_Output1, function out1 = estimator_Plant_Bu_Output1
+  clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_B_Output1, function in2 = estimator_rvsCut_Output1, function out1 = estimator_Plant_Bu_Output1
 end
 
 namespace NS_estimator_Plant_Cx
@@ -251,44 +229,36 @@ namespace NS_estimator_uEqKx
   clone rvs_simulink.T_rvsMult with function in1 = estimator_Constants_K_Output1, function in2 = estimator_Observer_x_hat__Output1, function out1 = estimator_uEqKx_Output1
 end
 
-namespace NS_estimator_Error_Dynamics_Acle_is_const
-  lemma G_estimator_Error_Dynamics_Acle_is_const: forall k: int.  estimator_Error_Dynamics_AminusLC_Output1 k =  estimator_Error_Dynamics_AminusLC_Output1 (k-1)
+namespace NS_estimator_Error_Dynamics_Constants_Acle_is_const
+  lemma G_estimator_Error_Dynamics_Constants_Acle_is_const: forall k: int.  estimator_Error_Dynamics_Constants_AminusLC_Output1 k =  estimator_Error_Dynamics_Constants_AminusLC_Output1 (k-1)
 end
 
-namespace NS_estimator_Error_Dynamics_LC_is_const
-  lemma G_estimator_Error_Dynamics_LC_is_const: forall k: int.  estimator_Error_Dynamics_LC_Output1 k =  estimator_Error_Dynamics_LC_Output1 (k-1)
+namespace NS_estimator_Error_Dynamics_Constants_LC_is_const
+  lemma G_estimator_Error_Dynamics_Constants_LC_is_const: forall k: int.  estimator_Error_Dynamics_Constants_LC_Output1 k =  estimator_Error_Dynamics_Constants_LC_Output1 (k-1)
 end
 
-namespace NS_estimator_Error_Dynamics_checkAe
-  lemma G_estimator_Error_Dynamics_checkAe: forall k: int.  estimator_Error_Dynamics_Ax1_Output1 k =  estimator_Error_Dynamics_x_del_diff1_Output1 k
+namespace NS_estimator_Error_Dynamics_dynamics_chk_checkAe
+  lemma G_estimator_Error_Dynamics_dynamics_chk_checkAe: forall k: int.  estimator_Error_Dynamics_dynamics_chk_Aedel_Output1 k =  estimator_Error_Dynamics_dynamics_chk_x_del_diff1_Output1 k
 end
 
-namespace NS_estimator_Error_Dynamics_checkLCequiv
-  lemma G_estimator_Error_Dynamics_checkLCequiv: forall k: int.  estimator_Error_Dynamics_LCe_Output1 k =  estimator_Error_Dynamics_LCe1_Output1 k
+namespace NS_estimator_Error_Dynamics_dynamics_chk_checkPlantDyn
+  lemma G_estimator_Error_Dynamics_dynamics_chk_checkPlantDyn: forall k: int.  estimator_Plant_x_Output1 k =  estimator_Error_Dynamics_dynamics_chk_AxplusBu_Output1 k
 end
 
-namespace NS_estimator_Error_Dynamics_checkPlantDyn
-  lemma G_estimator_Error_Dynamics_checkPlantDyn: forall k: int.  estimator_Plant_x_Output1 k =  estimator_Error_Dynamics_AxplusBu_Output1 k
+namespace NS_estimator_Error_Dynamics_sanity1_rvsEquivLemma
+  lemma G_estimator_Error_Dynamics_sanity1_rvsEquivLemma: forall k: int.  estimator_Error_Dynamics_e_del_Output1 k =  estimator_Error_Dynamics_sanity1_x_del_diff_Output1 k
 end
 
-namespace NS_estimator_Error_Dynamics_lemma_cl_e_equiv
-  lemma G_estimator_Error_Dynamics_lemma_cl_e_equiv: forall k: int.  estimator_Error_Dynamics_Ae_minusLC_e_Output1 k =  estimator_Error_Dynamics_Acle_e_Output1 k
-end
-
-namespace NS_estimator_Error_Dynamics_rvsEquivLemma
-  lemma G_estimator_Error_Dynamics_rvsEquivLemma: forall k: int.  estimator_Error_Dynamics_e_del_Output1 k =  estimator_Error_Dynamics_x_del_diff_Output1 k
-end
-
-namespace NS_estimator_Error_Dynamics_rvsEquivLemma1
-  lemma G_estimator_Error_Dynamics_rvsEquivLemma1: forall k: int.  estimator_Error_Dynamics_xhat_plus_e_Output1 k =  estimator_Plant_x_Output1 k
+namespace NS_estimator_Error_Dynamics_sanity2_rvsEquivLemma1
+  lemma G_estimator_Error_Dynamics_sanity2_rvsEquivLemma1: forall k: int.  estimator_Error_Dynamics_sanity2_xhat_plus_e_Output1 k =  estimator_Plant_x_Output1 k
 end
 
 namespace NS_estimator_Observer_errorChecks_innovLCeCheck
   lemma G_estimator_Observer_errorChecks_innovLCeCheck: forall k: int.  estimator_Observer_L_innov_Output1 k =  estimator_Observer_errorChecks_Bu1_Output1 k
 end
 
-namespace NS_estimator_Error_Dynamics_rvsEquiv
-  goal G_estimator_Error_Dynamics_rvsEquiv: forall k: int.  estimator_Error_Dynamics_e_Output1 k =  estimator_Error_Dynamics_Acle_e_Output1 k
+namespace NS_estimator_Error_Dynamics_goalErrorDyn
+  goal G_estimator_Error_Dynamics_goalErrorDyn: forall k: int.  estimator_Error_Dynamics_e_Output1 k =  estimator_Error_Dynamics_Acle_e_Output1 k
 end
 
 end
