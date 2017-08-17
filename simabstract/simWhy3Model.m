@@ -3,7 +3,7 @@ classdef simWhy3Model < simAbstractSyntax
     properties(Constant=true)
         known_masks = {'rvsAdd','rvsSubtract','rvsMult','rvsDelay','rvsTranspose'};
         known_blocks = {'Constant'};
-        ignore_blocks = {'Inport','Outport','Scope'};
+        ignore_blocks = {'Inport','Outport','Scope','From','Goto'};
     end
     
     properties

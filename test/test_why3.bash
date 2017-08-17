@@ -6,3 +6,4 @@ why3 prove -P $PROVER -L ../why3lib delay.why | grep --color -E "Timeout|Unknown
 why3 prove -P $PROVER -L ../why3lib quad.why | grep --color -E "Timeout|Unknown|$"
 why3 prove -P $PROVER -L ../why3lib feedback.why | grep --color -E "Timeout|Unknown|$"
 why3 prove -P $PROVER -L ../why3lib lyap.why | grep --color -E "Timeout|Unknown|$"
+why3 prove -P $PROVER -L ../why3lib estimator.why | grep --color -E "Timeout|Unknown|$"
